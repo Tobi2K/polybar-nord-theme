@@ -19,7 +19,7 @@ case $1 in
 	"menu")
 		if [ $service == 'active' ]
 		then
-			CM_LAUNCHER=$dmenu_launcher clipmenu 
+			CM_LAUNCHER=rofi clipmenu 
 			printf '%s' '%{F#a3be8c}%{F-}'
 		else
 			printf '%s' '%{F#4c566a}%{F-}'

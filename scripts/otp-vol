@@ -1,0 +1,36 @@
+#!/bin/sh                                                             
+
+# Adapted by JMarceloFN - https://gitlab.com/JMarceloFN/                                                                      
+# Original script found at                                              
+# https://forum.manjaro.org/t/i-cannot-change-the-pulse-audio-output-to 
+# -headphones-from-commandline/                                         
+# along with Julien Bonjean script <julien@bonjean.info> 
+
+CARD="${1:-1}"
+#MIXER="${2:-default}" # use pulse for pulseaudio, default is alsa
+VOLUME="$(pactl list sinks | grep '^[[:space:]]Volume:' | \
+	head -n +2 | \
+	tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')"
+ACTIVESINK=$(pacmd list-sinks | grep 'active port' | awk '{ print $3 }' | \
+	grep -v     hdmi | tr -d '><')
+
+case $BLOCK_BUTTON in
+  2) amixer -q sset Master toggle ;; # middle click
+  4) amixer -q sset Master 4%+ ;;   # scroll up
+  5) amixer -q sset Master 4%- ;;   # scroll down
+esac
+
+# Display output, depending if the sound is comimg from the speakers or
+# the headset
+
+if
+[ "$ACTIVESINK" == "analog-output-headphones" ]; then
+        echo  $VOLUME%
+fi
+
+if
+[ "$ACTIVESINK" == "analog-output-lineout" ]; then
+         echo  $VOLUME%
+fi
+
+exit 0

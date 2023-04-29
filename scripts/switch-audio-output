@@ -1,0 +1,26 @@
+#!/bin/bash
+ 
+# Original script found at 
+# https://forum.manjaro.org/t/i-cannot-change-the-pulse-audio-output-to
+# -headphones-from-commandline/
+# Thanks Dave!!!
+# Adapted for my needs, precisely, the ACTIVESINK was giving me 
+# analog-output-* and hdmi-output-1 as result, so the script was not working. 
+# To solve it i inserted the command "grep -v hdmi" at the end of line 14.
+
+    SINKID=$(pacmd list-sinks | sed -n -e '3{p;q}' | awk '{ print $2 }' \
+            | tr -d '><')
+    ACTIVESINK=$(pacmd list-sinks | grep 'active port' | awk '{ print $3 }' \
+            | grep -v hdmi-output-1 | tr -d '><')
+
+    if [ "$ACTIVESINK" == "analog-output-headphones" ]; 
+        then
+            pacmd set-sink-port $SINKID analog-output-lineout
+    fi
+
+    if [ "$ACTIVESINK" == "analog-output-lineout" ]; 
+        then
+        	pacmd set-sink-port $SINKID analog-output-headphones
+    fi
+
+exit 0

@@ -1,0 +1,584 @@
+; vim:ft=dosini
+
+[module/alsa]
+type = internal/alsa
+
+master-soundcard = ${config.master-soundcard}
+speaker-soundcard = ${config.speaker-soundcard}
+headphone-soundcard = ${config.headphone-soundcard}
+
+master-mixer = ${config.master-mixer}
+
+; Format
+format-volume = <ramp-volume> <label-volume>
+format-volume-underline = ${colors.function}
+
+label-muted =  muted
+label-muted-foreground = ${colors.urgent}
+label-muted-underline = ${colors.urgent}
+
+ramp-volume-0 = 
+ramp-volume-0-foreground = ${colors.success}
+ramp-volume-1 = 
+ramp-volume-1-foreground = ${colors.notify}
+ramp-volume-2 = 
+ramp-volume-2-foreground = ${colors.urgent}
+
+ramp-headphones-0 = 
+
+ramp-volume-foreground = ${colors.nord7}
+
+
+[module/backlight]
+type = internal/backlight
+
+card = intel_backlight
+
+enable-scroll = true
+use-actual-brightness = true
+
+; Use xbacklight when the default backlight does not work.
+; For more details check https://github.com/polybar/polybar/wiki/Module:-xbacklight.
+;[module/backlight]
+;type = internal/xbacklight
+;enable-scroll = true
+
+; Format
+format = <ramp> <label>
+;format-underline = ${colors.nord9}
+
+ramp-0 = 
+
+label = %{A1:$HOME/.config/polybar/scripts/toggle-redshift.sh:}%percentage%%%{A}
+ramp-foreground = ${colors.nord9}
+
+
+[module/battery]
+type = internal/battery
+
+full-at = ${config.battery-full-at}
+
+battery = ${config.battery-bat}
+adapter = ${config.battery-adp}
+
+format-charging = <animation-charging> <label-charging>
+;format-charging-underline = ${colors.foreground}
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-framerate = 750
+
+format-discharging = <ramp-capacity> <label-discharging>
+;format-discharging-underline = ${colors.notify}
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+ramp-capacity-foreground = ${colors.notify}
+
+label-full = 
+label-full-foreground = ${colors.success}
+;label-full-underline = ${colors.success}
+
+
+[module/bspwm]
+type = internal/bspwm
+
+ws-icon-0 = ${config.ws-icon-0}
+ws-icon-1 = ${config.ws-icon-1}
+ws-icon-2 = ${config.ws-icon-2}
+ws-icon-3 = ${config.ws-icon-3}
+ws-icon-4 = ${config.ws-icon-4}
+ws-icon-5 = ${config.ws-icon-5}
+ws-icon-6 = ${config.ws-icon-6}
+ws-icon-7 = ${config.ws-icon-7}
+ws-icon-8 = ${config.ws-icon-8}
+ws-icon-9 = ${config.ws-icon-9}
+ws-icon-default = ${config.ws-icon-default}
+
+label-focused = %icon%
+label-focused-underline = ${colors.nord7}
+label-focused-foreground = ${colors.nord7}
+label-focused-padding = 2
+
+label-occupied = %icon%
+label-occupied-underline = ${colors.nord9}
+label-occupied-foreground = ${colors.nord9}
+label-occupied-padding = 2
+
+label-empty = %icon%
+label-empty-foreground = ${colors.buffer}
+label-empty-padding = 2
+
+label-urgent = 
+label-urgent-foreground = ${colors.urgent}
+label-urgent-background = ${colors.foreground}
+label-urgent-padding = 2
+
+; seperator
+label-separator = |
+label-separator-foreground = ${colors.buffer}
+
+
+[module/clash-widget]
+type = custom/script
+
+exec = ~/.config/polybar/scripts/clash.sh
+interval = 3
+
+click-left = ~/.config/polybar/scripts/clash.sh toggle
+
+
+[module/clipmenu-widget]
+type = custom/script
+
+exec = ~/.config/polybar/scripts/clipmenu.sh
+interval = 3
+
+click-left = ~/.config/polybar/scripts/clipmenu.sh menu
+click-right = ~/.config/polybar/scripts/clipmenu.sh toggle
+
+
+[module/cpu]
+type = internal/cpu
+interval = 1
+
+format = <ramp-load> <label>
+
+ramp-load-0 = 
+ramp-load-0-foreground = ${colors.success}
+
+ramp-load-1 = 
+ramp-load-1-foreground = ${colors.warning}
+
+ramp-load-2 = 
+ramp-load-2-foreground = ${colors.urgent}
+
+
+[module/daily-poem]
+type = custom/ipc
+
+# Check `~/.config/polybar/scripts/daily-poem -h` for more help information
+hook-0 = ~/.config/polybar/scripts/daily-poem -p jrsc -u content
+hook-1 = ~/.config/polybar/scripts/daily-poem -p jrsc dynasty author title --sep " / "
+hook-2 = ~/.config/polybar/scripts/daily-poem -p jrsc matches
+hook-3 = ~/.config/polybar/scripts/daily-poem -p jrsc content
+
+initial = 1
+
+scroll-up = polybar-msg -p %pid% hook daily-poem 2
+scroll-down = polybar-msg -p %pid% hook daily-poem 3
+click-left = polybar-msg -p %pid% hook daily-poem 4
+click-right = polybar-msg -p %pid% hook daily-poem 1
+
+format-underline = ${colors.nord7}
+
+[module/devices]
+type = custom/script
+exec = ~/.config/polybar/polybar-scripts/system-usb-udev/system-usb-udev.sh
+tail = true
+click-left = ~/.config/polybar/polybar-scripts/system-usb-udev/system-usb-udev.sh --mount &
+click-right = ~/.config/polybar/polybar-scripts/system-usb-udev/system-usb-udev.sh --unmount &
+
+[module/date]
+type = internal/date
+interval = 1.0
+; See "http://en.cppreference.com/w/cpp/io/manip/put_time" for details on how to format the date string
+; NOTE: if you want to use syntax tags here you need to use %%{...}
+date = %H:%M:%S
+
+date-alt = %a, %d/%m/%Y
+
+format = <label>
+label =  %date%
+label-margin = 1
+;label-underline = ${colors.nord8}
+
+
+[module/github]
+type = custom/script
+exec = busctl --user -j get-property io.ntfd /github github.strings RenderedTemplate | jq -r .data
+interval = 10
+label-font = 6
+
+
+[module/i3]
+type = internal/i3
+
+pin-workspaces = ${config.i3-pin-workspaces}
+
+strip-wsnumbers = true
+
+index-sort = true
+enable-click = true
+enable-scroll = true
+wrapping-scroll = true
+reverse-scroll = true
+
+fuzzy-match = false
+
+; Available tags:
+;   <label-state> (default) - gets replaced with <label-(focused|unfocused|visible|urgent)>
+;   <label-mode> (default)
+format = <label-state> <label-mode>
+
+; icons
+ws-icon-0 = ${config.ws-icon-0}
+ws-icon-1 = ${config.ws-icon-1}
+ws-icon-2 = ${config.ws-icon-2}
+ws-icon-3 = ${config.ws-icon-3}
+ws-icon-4 = ${config.ws-icon-4}
+ws-icon-5 = ${config.ws-icon-5}
+ws-icon-6 = ${config.ws-icon-6}
+ws-icon-7 = ${config.ws-icon-7}
+ws-icon-8 = ${config.ws-icon-8}
+ws-icon-9 = ${config.ws-icon-9}
+ws-icon-default = ${config.ws-icon-default}
+
+; color
+label-visible-foreground = ${colors.nord10}
+
+label-focused-underline = ${colors.nord8}
+label-focused-foreground = ${colors.nord9}
+label-focused-padding = 2
+
+label-unfocused-foreground = ${colors.nord10}
+label-unfocused-padding = 2
+
+label-urgent-foreground = ${colors.urgent}
+# label-urgent-underline = ${colors.urgent}
+label-urgent-background = ${colors.foreground}
+label-urgent-padding = 2
+
+; seperator
+label-separator = |
+label-separator-foreground = ${colors.buffer}
+
+
+[module/info-hackspeed]
+type = custom/script
+exec = ~/.config/polybar/scripts/info-hackspeed.sh
+tail = true
+
+
+[module/keyboard]
+type = internal/xkeyboard
+
+; List of indicators to ignore
+bufferlist-0 = num lock
+bufferlist-1 = scroll lock
+
+; Format
+format = <label-indicator>
+
+label-indicator-on-capslock =  CL
+label-indicator-on-capslock-foreground = ${colors.warning}
+label-indicator-on-capslock-underline = ${colors.warning}
+
+; Icons
+layout-icon-default = 
+
+
+[module/logseq-sync]
+type = custom/text
+
+content = 
+content-foreground = ${colors.success}
+content-padding = 1
+content-left = git -C /home/yucklys/OneDrive/logseq push
+content-right = git -C /home/yucklys/OneDrive/logseq pull -ff
+
+
+[module/memory]
+type = internal/memory
+interval = 3
+
+format = <ramp-used> <label>
+
+; label = %gb_used%/%gb_total%
+
+ramp-used-0 = 
+ramp-used-0-foreground = ${colors.success}
+
+ramp-used-1 = 
+ramp-used-1-foreground = ${colors.warning}
+
+ramp-used-2 = 
+ramp-used-2-foreground = ${colors.urgent}
+
+
+[module/mpd]
+type = internal/mpd
+
+host = ${config.mpd-host}
+port = ${config.mpd-port}
+
+; Format
+format-online = <toggle> <icon-prev> <label-song> <icon-next> <icon-stop> | <bar-progress> | <icon-repeat> <icon-random>
+format-paused = <toggle> <icon-prev> <label-song> <icon-next> <icon-stop>
+format-stopped =  <toggle>
+
+label-song-underline = ${colors.nord8}
+label-song = %artist:0:10:...% - %title:0:10:...%
+
+icon-play = 
+icon-play-foreground = ${colors.success}
+icon-play-margin = 1
+icon-pause = 
+icon-pause-foreground = ${colors.warning}
+icon-pause-margin = 1
+icon-stop = 
+icon-stop-foreground = ${colors.urgent}
+icon-stop-margin = 1
+icon-prev = 
+icon-prev-foreground = ${colors.function}
+icon-prev-margin = 1
+icon-next = 
+icon-next-foreground = ${colors.function}
+icon-next-margin = 1
+icon-repeat = 
+icon-repeat-margin = 1
+icon-random = 
+icon-random-margin = 1
+
+toggle-on-foreground = ${colors.success}
+toggle-off-foreground = ${colors.urgent}
+
+bar-progress-width = 20
+bar-progress-indicator = |
+bar-progress-fill = -
+bar-progress-empty = -
+bar-progress-gradient = true
+bar-progress-foreground-0 = ${colors.nord7}
+bar-progress-foreground-1 = ${colors.nord8}
+bar-progress-foreground-2 = ${colors.nord9}
+
+
+[module/mullvad-status]
+type = custom/script
+
+exec = ~/.config/polybar/scripts/mullvad.sh
+interval = 5
+
+click-left = ${config.mullvad-click-left}
+
+
+[module/network-detail]
+type = internal/network
+interface = ${config.interface}
+
+interval = 3
+
+format-connected = <label-connected>
+
+label-connected =  %downspeed:9%   %upspeed:9%
+label-connected-foreground = ${colors.foreground}
+
+[module/network-short]
+type = internal/network
+interface = ${config.interface}
+
+interval = 1
+
+format-connected = %{A1:networkmanager_dmenu:}<ramp-signal>%{A}
+format-disconnected = %{A1:networkmanager_dmenu:}<label-disconnected>%{A}
+
+label-disconnected = 
+label-disconnected-foreground = ${colors.urgent}
+
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+
+ramp-signal-0-foreground = ${colors.urgent}
+ramp-signal-0-underline = ${colors.urgent}
+
+ramp-signal-1-foreground = ${colors.notify}
+ramp-signal-1-underline = ${colors.notify}
+
+ramp-signal-2-foreground = ${colors.nord7}
+ramp-signal-2-underline = ${colors.nord7}
+
+ramp-signal-3-foreground = ${colors.success}
+ramp-signal-3-underline = ${colors.success}
+
+
+[module/notify]
+type = custom/text
+content = 
+content-foreground = ${colors.warning}
+content-underline = ${colors.warning}
+content-padding = 1
+
+click-left = ${config.notify-click-left}
+
+
+[module/onedrive-widget]
+type = custom/script
+
+exec = ~/.config/polybar/scripts/onedrive.sh
+interval = 3
+
+click-left = ~/.config/polybar/scripts/onedrive.sh toggle
+
+
+[module/powermenu]
+type = custom/text
+
+content = %{O1px}  %{O10px} 
+content-foreground = ${colors.nord7}
+#content-background = ${colors.nord9}
+# content-padding = 3
+
+click-left = rofi -show power-menu -modi power-menu:rofi-power-menu
+
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+sink = alsa_output.pci-0000_00_1f.3.analog-stereo
+
+interval = 5
+
+; Format
+format-volume = <ramp-volume> <label-volume>
+;format-volume-underline = ${colors.function}
+
+label-muted =  muted
+label-muted-foreground = ${colors.urgent}
+label-muted-underline = ${colors.urgent}
+
+ramp-volume-0 = 
+ramp-volume-0-foreground = ${colors.success}
+ramp-volume-1 = 
+ramp-volume-1-foreground = ${colors.notify}
+ramp-volume-2 = 
+ramp-volume-2-foreground = ${colors.urgent}
+
+ramp-headphones-0 = 
+
+ramp-volume-foreground = ${colors.nord7}
+
+
+[module/rofi-run]
+type = custom/text
+
+
+content = %{O10px}  
+#content-background = ${colors.nord9}
+content-foreground = ${colors.nord7}
+# content-padding = 0
+
+click-left = ~/rofi_launcher.sh
+
+
+[module/show-desktop]
+type = custom/text
+
+content = 
+
+click-left = i3-msg workspace 25:Desktop
+
+
+[module/spotify]
+type = custom/script
+interval = 1
+format-prefix = "🎵 "
+format = <label>
+exec = python3 $HOME/.config/polybar/scripts/spotify_status.py -f '{artist}: {song}'
+format-foreground = ${colors.nord7}
+#format-underline = #1db954
+;control players (optional)
+click-left = playerctl --player=spotify play-pause
+click-right = playerctl --player=spotify next
+click-middle = playerctl --player=spotify previous
+
+
+[module/system-bluetooth-bluetoothctl]
+type = custom/script
+exec = ~/.config/polybar/polybar-scripts/system-bluetooth-bluetoothctl/system-bluetooth-bluetoothctl.sh
+tail = true
+click-left = ~/.config/polybar/polybar-scripts/system-bluetooth-bluetoothctl/system-bluetooth-bluetoothctl.sh --toggle &
+
+
+[module/temperature]
+type = internal/temperature
+
+thermal-zone = ${config.thermal-zone}
+
+base-temperature = ${config.base-temperature}
+
+warn-temperature = ${config.warn-temperature}
+
+hwmon-path = ${config.hwmon-path}
+
+; Format
+format = <ramp> <label>
+format-warn = <label-warn>
+format-warn-background = ${colors.foreground}
+
+label-warn =  %temperature-c%
+#label-warn-padding = 1
+label-warn-foreground = ${colors.urgent}
+label-warn-background = ${colors.foreground}
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-3 = 
+ramp-4 = 
+
+
+ramp-0-foreground = ${colors.nord8}
+ramp-1-foreground = ${colors.nord8}
+ramp-2-foreground = ${colors.success}
+ramp-3-foreground = ${colors.success}
+ramp-4-foreground = ${colors.warning}
+
+interval = 10
+
+
+[module/title]
+type = internal/xwindow
+format-foreground = ${colors.nord7}
+format-underline = #BD8F90
+# format-padding = 4
+
+label-maxlen = 50
+#label-empty = 
+
+
+[module/weather]
+type = custom/script
+exec = busctl --user -j get-property io.ntfd /weather openweathermap.strings RenderedTemplate | jq -r .data
+interval = 60
+label-font = 6
+
+[module/weather-extension]
+type = custom/script
+exec = ~/.config/polybar/polybar-scripts/openweathermap-fullfeatured/openweathermap-fullfeatured.sh
+interval = 60
+label-font = 6
+
+
+[module/workspace-name]
+type = internal/i3
+strip-wsnumbers = true
+
+format = <label-state>
+
+label-focused = %name%
+# label-focused-padding = 2
+label-focused-foreground = ${colors.nord7}
+label-focused-underline = ${colors.nord7}
+
+label-unfocused = 
+
+label-urgent = %name%
+label-urgent-foreground = ${colors.urgent}
+label-urgent-background = ${colors.foreground}
+#label-urgent-padding = 2

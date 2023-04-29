@@ -12,7 +12,7 @@
 
 # bar position, apply globally
 width = 100%
-height = 3%
+height = 2.5%
 offset-x = 0
 offset-y = 0
 radius = 0.0
@@ -26,7 +26,7 @@ fixed-center = true
 # you can uncomment the following lines and restart the bar to see
 # if the problem is solved.
 # If problem still persist, look at Polybar's wiki for more options.
-override-redirect = false
+# override-redirect = false
 wm-restack = bspwm
 
 # -------------------------------------------
@@ -63,26 +63,26 @@ wm-restack = bspwm
 # mullvad-status: showing mullvad status
 
 # Top modules
-top-left = rofi-run bspwm title
-top-center = mpd
-top-right = keyboard clipmenu-widget onedrive-widget clash-widget pulseaudio network-short battery date
+top-left = rofi-run 
+top-center = title
+top-right = network-detail cpu memory temperature battery powermenu
 
 # Bottom modules
-bottom-left = powermenu info-hackspeed weather
-bottom-center = daily-poem
-bottom-right = temperature
+bottom-left = i3
+bottom-center = spotify
+bottom-right = devices system-bluetooth-bluetoothctl weather-extension keyboard clipmenu-widget pulseaudio date
 
 # Position of tray icons. Avaliable options are left/center/right and none.
 # If the tray is put at the bottom bar, then systray-top must set to none, and vice versa.
-systray-top = none
-systray-bottom = right
+systray-top = left
+systray-bottom = none
 
 # -------------------------------------------
 # Styles
 # -------------------------------------------
 
 # Under-/overline pixel size
-line-size = 6
+line-size = 1
 
 # -------------------------------------------
 # Modules Configurations
@@ -92,25 +92,25 @@ line-size = 6
 # Format is {identifier};{icon}, where identifier is the name of the workspace,
 # and icon is the label to be displayed.
 # If no icon is provided, {identifier} will be used as label.
-ws-icon-0 = I;
-ws-icon-1 = II;
-ws-icon-2 = III;
-ws-icon-3 = IV;
-ws-icon-4 = V;
+ws-icon-0 = 1:terminal;
+ws-icon-1 = 2:web;
+ws-icon-2 = 3:communication;
+ws-icon-3 = 4:development;
+ws-icon-4 = 5:spotify;
 ws-icon-5 = VI;
 ws-icon-6 = VII;
 ws-icon-7 = VIII;
 ws-icon-8 = IX;
-ws-icon-9 = X;
+ws-icon-9 = 10:media;
 # default icon used if not specified.
-ws-icon-default = 
+ws-icon-default = 
 
 ## network-short
 # the default value in this section should work in most cases,
 # if some of them doesn't suit your environment, you can change
 # it from here.
 # network interface, check by `ip link show`
-interface = wlan0
+interface = ${env:INTERFACE:wlan0}
 
 ## battery
 # when the current battery capacity excess this value,
@@ -139,6 +139,8 @@ thermal-zone = 3
 base-temperature = 20
 # Threshold temperature to display warning label (in degrees celsius)
 warn-temperature = 70
+# hwmon path
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon7/temp1_input
 
 ## github
 # GitHub personal token. Select at least `notifications` option.
